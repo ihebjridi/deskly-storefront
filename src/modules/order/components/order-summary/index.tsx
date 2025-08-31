@@ -18,39 +18,51 @@ const OrderSummary = ({ order }: OrderSummaryProps) => {
   }
 
   return (
-    <div>
-      <h2 className="text-base-semi">Order Summary</h2>
-      <div className="text-small-regular text-ui-fg-base my-2">
-        <div className="flex items-center justify-between text-base-regular text-ui-fg-base mb-2">
-          <span>Subtotal</span>
-          <span>{getAmount(order.subtotal)}</span>
+    <div className="bg-white rounded-lg border border-gray-200 shadow-sm p-6">
+      <div className="flex items-center gap-3 mb-4">
+        <div className="w-10 h-10 bg-tech-blue/10 rounded-lg flex items-center justify-center">
+          <svg className="w-5 h-5 text-tech-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+          </svg>
         </div>
-        <div className="flex flex-col gap-y-1">
-          {order.discount_total > 0 && (
-            <div className="flex items-center justify-between">
-              <span>Discount</span>
-              <span>- {getAmount(order.discount_total)}</span>
-            </div>
-          )}
-          {order.gift_card_total > 0 && (
-            <div className="flex items-center justify-between">
-              <span>Discount</span>
-              <span>- {getAmount(order.gift_card_total)}</span>
-            </div>
-          )}
-          <div className="flex items-center justify-between">
-            <span>Shipping</span>
-            <span>{getAmount(order.shipping_total)}</span>
-          </div>
-          <div className="flex items-center justify-between">
-            <span>Taxes</span>
-            <span>{getAmount(order.tax_total)}</span>
-          </div>
+        <h3 className="text-lg font-semibold text-primary-900">Order Summary</h3>
+      </div>
+
+      <div className="space-y-3">
+        <div className="flex items-center justify-between py-2">
+          <span className="text-sm text-gray-700">Subtotal</span>
+          <span className="text-sm font-medium text-primary-900">{getAmount(order.subtotal)}</span>
         </div>
-        <div className="h-px w-full border-b border-gray-200 border-dashed my-4" />
-        <div className="flex items-center justify-between text-base-regular text-ui-fg-base mb-2">
-          <span>Total</span>
-          <span>{getAmount(order.total)}</span>
+        
+        {order.discount_total > 0 && (
+          <div className="flex items-center justify-between py-2">
+            <span className="text-sm text-gray-700">Discount</span>
+            <span className="text-sm font-medium text-green-600">- {getAmount(order.discount_total)}</span>
+          </div>
+        )}
+        
+        {order.gift_card_total > 0 && (
+          <div className="flex items-center justify-between py-2">
+            <span className="text-sm text-gray-700">Gift Card</span>
+            <span className="text-sm font-medium text-green-600">- {getAmount(order.gift_card_total)}</span>
+          </div>
+        )}
+        
+        <div className="flex items-center justify-between py-2">
+          <span className="text-sm text-gray-700">Shipping</span>
+          <span className="text-sm font-medium text-primary-900">{getAmount(order.shipping_total)}</span>
+        </div>
+        
+        <div className="flex items-center justify-between py-2">
+          <span className="text-sm text-gray-700">Taxes</span>
+          <span className="text-sm font-medium text-primary-900">{getAmount(order.tax_total)}</span>
+        </div>
+        
+        <div className="border-t border-gray-200 my-4"></div>
+        
+        <div className="flex items-center justify-between py-2">
+          <span className="text-base font-semibold text-primary-900">Total</span>
+          <span className="text-lg font-bold text-primary-900">{getAmount(order.total)}</span>
         </div>
       </div>
     </div>

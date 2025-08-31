@@ -57,13 +57,13 @@ const DiscountCode: React.FC<DiscountCodeProps> = ({ cart }) => {
 
   return (
     <div className="w-full bg-white flex flex-col">
-      <div className="txt-medium">
+      <div className="text-body">
         <form action={(a) => addPromotionCode(a)} className="w-full mb-5">
-          <Label className="flex gap-x-1 my-2 items-center">
+          <Label className="flex gap-1 my-2 items-center">
             <button
               onClick={() => setIsOpen(!isOpen)}
               type="button"
-              className="txt-medium text-ui-fg-interactive hover:text-ui-fg-interactive-hover"
+              className="text-body text-accent-400 hover:text-primary-900 transition-colors duration-200"
               data-testid="add-discount-button"
             >
               Add Promotion Code(s)
@@ -76,8 +76,8 @@ const DiscountCode: React.FC<DiscountCodeProps> = ({ cart }) => {
 
           {isOpen && (
             <>
-              <div className="flex w-full gap-x-2">
-                <FormInput
+              <div className="flex w-full gap-2">
+                <Input
                   className="size-full"
                   id="promotion-input"
                   name="code"
@@ -104,7 +104,7 @@ const DiscountCode: React.FC<DiscountCodeProps> = ({ cart }) => {
         {promotions.length > 0 && (
           <div className="w-full flex items-center">
             <div className="flex flex-col w-full">
-              <Heading className="txt-medium mb-2">
+              <Heading className="text-body font-medium text-primary-900 mb-2">
                 Promotion(s) applied:
               </Heading>
 
@@ -115,7 +115,7 @@ const DiscountCode: React.FC<DiscountCodeProps> = ({ cart }) => {
                     className="flex items-center justify-between w-full max-w-full mb-2"
                     data-testid="discount-row"
                   >
-                    <Text className="flex gap-x-1 items-baseline txt-small-plus w-4/5 pr-1">
+                    <Text className="flex gap-1 items-baseline text-body w-4/5 pr-1">
                       <span className="truncate" data-testid="discount-code">
                         <Badge
                           color={promotion.is_automatic ? "green" : "grey"}
@@ -149,7 +149,7 @@ const DiscountCode: React.FC<DiscountCodeProps> = ({ cart }) => {
                     </Text>
                     {!promotion.is_automatic && (
                       <button
-                        className="flex items-center"
+                        className="flex items-center text-gray-600 hover:text-error transition-colors duration-200"
                         onClick={() => {
                           if (!promotion.code) {
                             return

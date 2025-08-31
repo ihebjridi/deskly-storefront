@@ -2,7 +2,7 @@
 
 import React, { useEffect, useActionState } from "react";
 
-import { FormInput } from "@modules/common/components/input"
+import Input from "@modules/common/components/input"
 
 import AccountInfo from "../account-info"
 import { HttpTypes } from "@medusajs/types"
@@ -56,14 +56,14 @@ const ProfileName: React.FC<MyInformationProps> = ({ customer }) => {
         data-testid="account-name-editor"
       >
         <div className="grid grid-cols-2 gap-x-4">
-          <FormInput
+          <Input
             label="First name"
             name="first_name"
             required
             defaultValue={customer.first_name ?? ""}
             data-testid="first-name-input"
           />
-          <FormInput
+          <Input
             label="Last name"
             name="last_name"
             required

@@ -1,281 +1,211 @@
-"use client"
+import { Metadata } from "next"
 
-import { useState } from "react"
-import Link from "next/link"
-import { MapPin, Phone, Mail, Clock } from "lucide-react"
-import { Button } from "@modules/common/components/ui/button"
-import { Input } from "@modules/common/components/ui/input"
-import { Label } from "@modules/common/components/ui/label"
-import { Textarea } from "@modules/common/components/ui/textarea"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@modules/common/components/ui/select"
-import { Card, CardContent } from "@modules/common/components/ui/card"
+export const metadata: Metadata = {
+  title: "Contact Us | Deskly - Premium Tech Store",
+  description: "Get in touch with our team. We're here to help with any questions about our tech products and services.",
+}
 
-export default function ContactPage() {
-  const [formSubmitted, setFormSubmitted] = useState(false)
-
-  const handleSubmit = (e: { preventDefault: () => void }) => {
-    e.preventDefault()
-    // In a real application, you would handle form submission here
-    setFormSubmitted(true)
-  }
-
+const ContactPage = () => {
   return (
-    <div className="container px-4 py-8 md:px-6 md:py-12">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-2">Contact Us</h1>
-        <div className="flex items-center text-sm text-muted-foreground">
-          <Link href="/" className="hover:text-primary">
-            Home
-          </Link>
-          <span className="mx-2">/</span>
-          <span>Contact</span>
-        </div>
-      </div>
-
-      <div className="grid md:grid-cols-3 gap-8">
-        <div className="md:col-span-2">
-          <Card>
-            <CardContent className="p-6">
-              <h2 className="text-2xl font-semibold mb-6">Get in Touch</h2>
-
-              {formSubmitted ? (
-                <div className="bg-primary/10 text-primary p-4 rounded-lg mb-6">
-                  <h3 className="font-semibold text-lg mb-2">Thank You!</h3>
-                  <p>Your message has been sent successfully. We'll get back to you as soon as possible.</p>
-                </div>
-              ) : (
-                <form onSubmit={handleSubmit} className="space-y-4">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="first-name">First Name</Label>
-                      <Input id="first-name" placeholder="John" required />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="last-name">Last Name</Label>
-                      <Input id="last-name" placeholder="Doe" required />
-                    </div>
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="email">Email</Label>
-                    <Input id="email" type="email" placeholder="john.doe@example.com" required />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="phone">Phone (Optional)</Label>
-                    <Input id="phone" type="tel" placeholder="(123) 456-7890" />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="subject">Subject</Label>
-                    <Select>
-                      <SelectTrigger id="subject">
-                        <SelectValue placeholder="Select a subject" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="general">General Inquiry</SelectItem>
-                        <SelectItem value="order">Order Status</SelectItem>
-                        <SelectItem value="return">Returns & Refunds</SelectItem>
-                        <SelectItem value="product">Product Information</SelectItem>
-                        <SelectItem value="other">Other</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="message">Message</Label>
-                    <Textarea id="message" placeholder="How can we help you?" className="min-h-[150px]" required />
-                  </div>
-
-                  <Button type="submit" className="w-full sm:w-auto">
-                    Send Message
-                  </Button>
-                </form>
-              )}
-            </CardContent>
-          </Card>
-        </div>
-
-        <div>
-          <Card>
-            <CardContent className="p-6">
-              <h2 className="text-xl font-semibold mb-6">Contact Information</h2>
-
-              <div className="space-y-6">
-                <div className="flex items-start gap-3">
-                  <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center text-primary flex-shrink-0">
-                    <MapPin className="h-5 w-5" />
-                  </div>
-                  <div>
-                    <h3 className="font-medium">Address</h3>
-                    <address className="not-italic text-muted-foreground">
-                      123 Pet Street
-                      <br />
-                      Dogville, NY 10001
-                      <br />
-                      United States
-                    </address>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-3">
-                  <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center text-primary flex-shrink-0">
-                    <Phone className="h-5 w-5" />
-                  </div>
-                  <div>
-                    <h3 className="font-medium">Phone</h3>
-                    <p className="text-muted-foreground">
-                      <a href="tel:+11234567890" className="hover:text-primary">
-                        +1 (123) 456-7890
-                      </a>
-                    </p>
-                    <p className="text-muted-foreground">
-                      <a href="tel:+18005551234" className="hover:text-primary">
-                        +1 (800) 555-1234
-                      </a>
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-3">
-                  <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center text-primary flex-shrink-0">
-                    <Mail className="h-5 w-5" />
-                  </div>
-                  <div>
-                    <h3 className="font-medium">Email</h3>
-                    <p className="text-muted-foreground">
-                      <a href="mailto:info@petdo.com" className="hover:text-primary">
-                        info@petdo.com
-                      </a>
-                    </p>
-                    <p className="text-muted-foreground">
-                      <a href="mailto:support@petdo.com" className="hover:text-primary">
-                        support@petdo.com
-                      </a>
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-3">
-                  <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center text-primary flex-shrink-0">
-                    <Clock className="h-5 w-5" />
-                  </div>
-                  <div>
-                    <h3 className="font-medium">Business Hours</h3>
-                    <p className="text-muted-foreground">Monday - Friday: 9am - 6pm</p>
-                    <p className="text-muted-foreground">Saturday: 10am - 4pm</p>
-                    <p className="text-muted-foreground">Sunday: Closed</p>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <div className="mt-6">
-            <Card>
-              <CardContent className="p-6">
-                <h2 className="text-xl font-semibold mb-4">Follow Us</h2>
-                <div className="flex gap-4">
-                  <a
-                    href="#"
-                    className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center text-primary hover:bg-primary hover:text-primary-foreground transition-colors"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="h-5 w-5"
-                    >
-                      <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
-                    </svg>
-                    <span className="sr-only">Facebook</span>
-                  </a>
-                  <a
-                    href="#"
-                    className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center text-primary hover:bg-primary hover:text-primary-foreground transition-colors"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="h-5 w-5"
-                    >
-                      <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-                      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-                      <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-                    </svg>
-                    <span className="sr-only">Instagram</span>
-                  </a>
-                  <a
-                    href="#"
-                    className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center text-primary hover:bg-primary hover:text-primary-foreground transition-colors"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="h-5 w-5"
-                    >
-                      <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path>
-                    </svg>
-                    <span className="sr-only">Twitter</span>
-                  </a>
-                  <a
-                    href="#"
-                    className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center text-primary hover:bg-primary hover:text-primary-foreground transition-colors"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="h-5 w-5"
-                    >
-                      <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
-                      <rect x="2" y="9" width="4" height="12"></rect>
-                      <circle cx="4" cy="4" r="2"></circle>
-                    </svg>
-                    <span className="sr-only">LinkedIn</span>
-                  </a>
-                </div>
-              </CardContent>
-            </Card>
+    <div className="min-h-screen bg-gray-50">
+      {/* Hero Section */}
+      <div className="bg-white border-b border-gray-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-16">
+          <div className="text-center">
+            <h1 className="text-4xl lg:text-5xl font-bold text-primary-900 mb-4">
+              Get in Touch
+            </h1>
+            <p className="text-lg lg:text-xl text-gray-600 max-w-2xl mx-auto">
+              Have questions about our tech products? Need support? We're here to help you find the perfect solution.
+            </p>
           </div>
         </div>
       </div>
 
-      {/* Map Section */}
-      <div className="mt-12">
-        <h2 className="text-2xl font-semibold mb-6">Find Us</h2>
-        <div className="h-[400px] bg-muted rounded-lg overflow-hidden relative">
-          <div className="absolute inset-0 flex items-center justify-center">
-            <p className="text-muted-foreground">Map would be displayed here</p>
+      {/* Main Content */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-16">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
+          {/* Contact Form */}
+          <div className="space-y-8">
+            <div>
+              <h2 className="text-2xl font-bold text-primary-900 mb-2">Send us a Message</h2>
+              <p className="text-gray-600">Fill out the form below and we'll get back to you within 24 hours.</p>
+            </div>
+
+            <form className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label htmlFor="firstName" className="block text-sm font-medium text-gray-700 mb-2">
+                    First Name
+                  </label>
+                  <input
+                    type="text"
+                    id="firstName"
+                    name="firstName"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-tech-blue focus:border-transparent transition-all duration-200"
+                    placeholder="Enter your first name"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="lastName" className="block text-sm font-medium text-gray-700 mb-2">
+                    Last Name
+                  </label>
+                  <input
+                    type="text"
+                    id="lastName"
+                    name="lastName"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-tech-blue focus:border-transparent transition-all duration-200"
+                    placeholder="Enter your last name"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                  Email Address
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-tech-blue focus:border-transparent transition-all duration-200"
+                  placeholder="Enter your email address"
+                />
+              </div>
+
+              <div>
+                <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-2">
+                  Subject
+                </label>
+                <select
+                  id="subject"
+                  name="subject"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-tech-blue focus:border-transparent transition-all duration-200"
+                >
+                  <option value="">Select a subject</option>
+                  <option value="general">General Inquiry</option>
+                  <option value="support">Technical Support</option>
+                  <option value="order">Order Status</option>
+                  <option value="returns">Returns & Exchanges</option>
+                  <option value="partnership">Partnership</option>
+                </select>
+              </div>
+
+              <div>
+                <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
+                  Message
+                </label>
+                <textarea
+                  id="message"
+                  name="message"
+                  rows={5}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-tech-blue focus:border-transparent transition-all duration-200 resize-none"
+                  placeholder="Tell us how we can help you..."
+                />
+              </div>
+
+                              <button
+                  type="submit"
+                  className="w-full bg-tech-blue text-white font-semibold py-4 px-6 rounded-lg hover:bg-tech-blue/90 transition-all duration-200 hover:shadow-lg hover:shadow-tech-blue/25"
+                >
+                  Send Message
+                </button>
+            </form>
+          </div>
+
+          {/* Contact Information */}
+          <div className="space-y-8">
+            <div>
+              <h2 className="text-2xl font-bold text-primary-900 mb-2">Contact Information</h2>
+              <p className="text-gray-600">Reach out to us through any of these channels.</p>
+            </div>
+
+            <div className="space-y-6">
+              {/* Customer Support */}
+              <div className="bg-white p-6 rounded-lg border border-gray-200 shadow-sm">
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 bg-tech-blue/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <svg className="w-6 h-6 text-tech-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192L5.636 18.364M12 2.25a9.75 9.75 0 100 19.5 9.75 9.75 0 000-19.5z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-primary-900 mb-1">Customer Support</h3>
+                    <p className="text-gray-600 mb-2">Get help with your orders and products</p>
+                    <p className="text-tech-blue font-medium">support@deskly.com</p>
+                    <p className="text-sm text-gray-500">Available 24/7</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Sales Team */}
+              <div className="bg-white p-6 rounded-lg border border-gray-200 shadow-sm">
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 bg-tech-blue/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <svg className="w-6 h-6 text-tech-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-primary-900 mb-1">Sales Team</h3>
+                    <p className="text-gray-600 mb-2">Questions about products and pricing</p>
+                    <p className="text-tech-blue font-medium">sales@deskly.com</p>
+                    <p className="text-sm text-gray-500">Mon-Fri, 9AM-6PM EST</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Office Location */}
+              <div className="bg-white p-6 rounded-lg border border-gray-200 shadow-sm">
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 bg-tech-blue/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <svg className="w-6 h-6 text-tech-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-primary-900 mb-1">Office Location</h3>
+                    <p className="text-gray-600 mb-2">Visit our headquarters</p>
+                    <p className="text-gray-700">123 Tech Street<br />Innovation District<br />San Francisco, CA 94105</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* FAQ Section */}
+            <div className="bg-white p-6 rounded-lg border border-gray-200 shadow-sm">
+              <h3 className="font-semibold text-primary-900 mb-4">Frequently Asked Questions</h3>
+              <div className="space-y-3">
+                <details className="group">
+                  <summary className="flex items-center justify-between cursor-pointer text-sm font-medium text-gray-700 hover:text-gray-900">
+                    What are your shipping options?
+                    <svg className="w-4 h-4 text-gray-400 group-open:rotate-180 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </summary>
+                  <p className="mt-2 text-sm text-gray-600 pl-4">
+                    We offer standard shipping (3-5 business days) and express shipping (1-2 business days). Free shipping on orders over $50.
+                  </p>
+                </details>
+                <details className="group">
+                  <summary className="flex items-center justify-between cursor-pointer text-sm font-medium text-gray-700 hover:text-gray-900">
+                    What is your return policy?
+                    <svg className="w-4 h-4 text-gray-400 group-open:rotate-180 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </summary>
+                  <p className="mt-2 text-sm text-gray-600 pl-4">
+                    We offer a 30-day return policy for most items. Products must be in original condition with all packaging intact.
+                  </p>
+                </details>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
   )
 }
+
+export default ContactPage

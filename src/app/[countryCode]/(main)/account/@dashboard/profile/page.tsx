@@ -24,24 +24,24 @@ export default async function Profile() {
   }
 
   return (
-    <div className="w-full" data-testid="profile-page-wrapper">
-      <div className="mb-8 flex flex-col gap-y-4">
-        <h1 className="text-2xl-semi">Profile</h1>
-        <p className="text-base-regular">
-          View and update your profile information, including your name, email,
-          and phone number. You can also update your billing address, or change
-          your password.
-        </p>
+    <div className="space-y-8" data-testid="profile-page-wrapper">
+      {/* Header Section */}
+      <div className="text-center py-8">
+        <div className="w-20 h-20 bg-tech-blue/10 rounded-full flex items-center justify-center mx-auto mb-4">
+          <svg className="w-10 h-10 text-tech-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+          </svg>
+        </div>
+        <h1 className="text-2xl font-bold text-primary-900 mb-2">Profile Settings</h1>
+        <p className="text-gray-600">Manage your personal information and preferences</p>
       </div>
-      <div className="flex flex-col gap-y-8 w-full">
+
+      {/* Profile Sections */}
+      <div className="space-y-6">
         <ProfileName customer={customer} />
-        <Divider />
         <ProfileEmail customer={customer} />
-        <Divider />
         <ProfilePhone customer={customer} />
-        <Divider />
-        {/* <ProfilePassword customer={customer} />
-        <Divider /> */}
+        {/* <ProfilePassword customer={customer} /> */}
         <ProfileBillingAddress customer={customer} regions={regions} />
       </div>
     </div>
@@ -51,4 +51,3 @@ export default async function Profile() {
 const Divider = () => {
   return <div className="w-full h-px bg-gray-200" />
 }
-;``

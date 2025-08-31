@@ -1,60 +1,286 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
 
 @layer base {
-  :root {
-    --background: 0 0% 100%;
-    --foreground: 0 0% 3.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 3.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 3.9%;
-    /* Updated primary color to match Deskly.ca blue branding */
-    --primary: 214 84% 56%; /* Blue color matching the logo */
-    --primary-foreground: 0 0% 98%;
-    --secondary: 0 0% 96.1%;
-    --secondary-foreground: 0 0% 9%;
-    --muted: 0 0% 96.1%;
-    --muted-foreground: 0 0% 45.1%;
-    --accent: 0 0% 96.1%;
-    --accent-foreground: 0 0% 9%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 89.8%;
-    --input: 0 0% 89.8%;
-    --ring: 214 84% 56%;
-    --radius: 0.5rem;
+  html {
+    font-family: var(--font-satoshi), 'Work Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Ubuntu, sans-serif !important;
   }
-
-  .dark {
-    --background: 0 0% 3.9%;
-    --foreground: 0 0% 98%;
-    --card: 0 0% 3.9%;
-    --card-foreground: 0 0% 98%;
-    --popover: 0 0% 3.9%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 214 84% 56%;
-    --primary-foreground: 0 0% 98%;
-    --secondary: 0 0% 14.9%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 0 0% 14.9%;
-    --muted-foreground: 0 0% 63.9%;
-    --accent: 0 0% 14.9%;
-    --accent-foreground: 0 0% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 14.9%;
-    --input: 0 0% 14.9%;
-    --ring: 214 84% 56%;
+  
+  body {
+    font-family: var(--font-satoshi), 'Work Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Ubuntu, sans-serif !important;
+  }
+  
+  * {
+    font-family: inherit !important;
+  }
+  
+  /* Ensure all text elements use our font */
+  h1, h2, h3, h4, h5, h6, p, span, div, a, button, input, textarea, select, label {
+    font-family: var(--font-satoshi), 'Work Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Ubuntu, sans-serif !important;
   }
 }
 
-@layer base {
-  * {
-    @apply border-border;
+:root {
+  /* Deskly Tech Design System Colors */
+  --color-primary-black: #0a0a0a;
+  --color-light-gray: #f8f9fa;
+  --color-accent-blue: #007bff;
+  --color-accent-cyan: #00d4aa;
+  --color-medium-gray: #6c757d;
+  
+  /* Extended Gray Palette */
+  --color-gray-50: #f9f9f9;
+  --color-gray-100: #f2f0ea;
+  --color-gray-200: #e5e5e5;
+  --color-gray-300: #d4d4d4;
+  --color-gray-400: #a3a3a3;
+  --color-gray-500: #737373;
+  --color-gray-600: #525252;
+  --color-gray-900: #010101;
+  
+  /* Accent Colors */
+  --color-yellow-400: #edcf5d;
+  --color-yellow-500: #d4af37;
+  
+  /* Status Colors */
+  --color-success: #22c55e;
+  --color-warning: #f59e0b;
+  --color-error: #ef4444;
+  --color-info: #3b82f6;
+}
+
+@layer utilities {
+  /* Chrome, Safari and Opera */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
   }
-  body {
-    @apply bg-background text-foreground;
+
+  .no-scrollbar::-webkit-scrollbar-track {
+    background-color: transparent;
   }
+
+  .no-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+
+  input:focus ~ label,
+  input:not(:placeholder-shown) ~ label {
+    @apply -translate-y-2 text-xs;
+  }
+
+  input:focus ~ label {
+    @apply left-0;
+  }
+
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  textarea:-webkit-autofill,
+  textarea:-webkit-autofill:hover,
+  textarea:-webkit-autofill:focus,
+  select:-webkit-autofill,
+  select:-webkit-autofill:hover,
+  select:-webkit-autofill:focus {
+    border: 1px solid #010101;
+    -webkit-text-fill-color: #010101;
+    -webkit-box-shadow: 0 0 0px 1000px #fff inset;
+    transition: background-color 5000s ease-in-out 0s;
+  }
+
+  input[type="search"]::-webkit-search-decoration,
+  input[type="search"]::-webkit-search-cancel-button,
+  input[type="search"]::-webkit-search-results-button,
+  input[type="search"]::-webkit-search-results-decoration {
+    -webkit-appearance: none;
+  }
+}
+
+@layer components {
+  .content-container {
+    @apply max-w-container w-full mx-auto px-6;
+  }
+
+           /* BR Design System Button Styles */
+         .btn-primary {
+           @apply px-6 py-3 bg-primary-900 text-white rounded-md font-semibold text-base transition-all duration-200 ease-in-out hover:opacity-90 hover:scale-[1.02] active:opacity-80 disabled:opacity-50 disabled:cursor-not-allowed;
+         }
+       
+         .btn-secondary {
+           @apply px-6 py-3 bg-transparent border border-primary-900 text-primary-900 rounded-md font-semibold text-base transition-all duration-200 ease-in-out hover:opacity-90 hover:scale-[1.02] active:opacity-80 disabled:opacity-50 disabled:cursor-not-allowed;
+         }
+       
+                 .btn-accent {
+          @apply px-6 py-3 bg-tech-blue text-white rounded-md font-semibold text-base transition-all duration-200 ease-in-out hover:opacity-90 hover:scale-[1.02] active:opacity-80 disabled:opacity-50 disabled:cursor-not-allowed;
+        }
+
+                    /* BR Design System Typography Classes */
+         .text-caption {
+           @apply text-xs leading-[1.3] font-normal;
+         }
+       
+         .text-body-small {
+           @apply text-sm leading-[1.4] font-normal;
+         }
+       
+         .text-body {
+           @apply text-base leading-[1.5] font-normal;
+         }
+       
+         .text-body-large {
+           @apply text-lg leading-[1.6] font-normal;
+         }
+       
+         .text-h4 {
+           @apply text-xl leading-[1.4] font-semibold;
+         }
+       
+         .text-h3 {
+           @apply text-2xl leading-[1.4] font-semibold;
+         }
+       
+         .text-h2 {
+           @apply text-3xl leading-[1.3] font-semibold;
+         }
+       
+         .text-h1 {
+           @apply text-5xl leading-[1.2] font-bold;
+         }
+       
+         .text-price-small {
+           @apply text-lg leading-none font-semibold text-primary-900;
+         }
+       
+         .text-price-large {
+           @apply text-3xl leading-none font-bold text-primary-900;
+         }
+
+  /* BR Design System Component Styles */
+  .card {
+    background: white;
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+  }
+  
+  .card:hover {
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    transform: translateY(-2px);
+  }
+
+           .input-field {
+           @apply border border-gray-300 rounded-md px-4 py-3 text-base transition-colors duration-200 ease-in-out focus:border-primary-900 focus:outline-none;
+         }
+
+  .size-selector {
+    @apply min-w-12 h-12 border border-gray-300 bg-white rounded-md transition-all duration-200 ease-in-out hover:border-primary-900 focus:border-primary-900 focus:outline-none;
+  }
+
+  .size-selector.selected {
+    @apply bg-primary-900 text-white border-primary-900;
+  }
+
+           /* Navigation Styles */
+         .nav-link {
+           @apply text-base font-medium text-primary-900 px-4 py-2 transition-colors duration-200 ease-in-out;
+         }
+         
+                 .nav-link:hover {
+          color: #007bff;
+        }
+         
+                 /* Footer link hover styles */
+        footer a:hover {
+          color: #007bff !important;
+        }
+
+  .nav-link.active {
+    @apply text-tech-blue;
+  }
+
+  /* Rating System */
+  .star-rating {
+    @apply text-tech-blue;
+  }
+
+  .star-rating.inactive {
+    @apply text-gray-300;
+  }
+
+  .review-bar {
+    @apply bg-gray-100 h-2 rounded-sm;
+  }
+
+  .review-bar-fill {
+    @apply bg-tech-blue h-2 rounded-sm;
+  }
+
+  /* Custom Range Slider */
+  .slider {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 8px;
+    border-radius: 4px;
+    background: #e5e7eb;
+    outline: none;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+  }
+
+  .slider:hover {
+    opacity: 1;
+  }
+
+  .slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #3b82f6;
+    cursor: pointer;
+    border: 2px solid white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s ease;
+  }
+
+  .slider::-webkit-slider-thumb:hover {
+    background: #2563eb;
+    transform: scale(1.1);
+  }
+
+  .slider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #3b82f6;
+    cursor: pointer;
+    border: 2px solid white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s ease;
+  }
+
+  .slider::-moz-range-thumb:hover {
+    background: #2563eb;
+    transform: scale(1.1);
+  }
+
+  /* Line Clamp Utility */
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* Custom Border Radius System - Less Rounded Design */
+  .rounded-custom-sm { border-radius: 0.125rem; }
+  .rounded-custom { border-radius: 0.25rem; }
+  .rounded-custom-md { border-radius: 0.375rem; }
+  .rounded-custom-lg { border-radius: 0.5rem; }
+  .rounded-custom-xl { border-radius: 0.625rem; }
+  .rounded-custom-2xl { border-radius: 0.75rem; }
+  .rounded-custom-3xl { border-radius: 1rem; }
 }

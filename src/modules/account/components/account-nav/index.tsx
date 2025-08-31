@@ -30,7 +30,7 @@ const AccountNav = ({
         {route !== `/${countryCode}/account` ? (
           <LocalizedClientLink
             href="/account"
-            className="flex items-center gap-x-2 text-small-regular py-2"
+            className="flex items-center gap-2 text-body py-2 text-gray-600 hover:text-primary-900 transition-colors duration-200"
             data-testid="account-main-link"
           >
             <>
@@ -40,19 +40,19 @@ const AccountNav = ({
           </LocalizedClientLink>
         ) : (
           <>
-            <div className="text-xl-semi mb-4 px-8">
+            <div className="text-h3 text-primary-900 font-semibold mb-4 px-8">
               Hello {customer?.first_name}
             </div>
-            <div className="text-base-regular">
+            <div className="text-body">
               <ul>
                 <li>
                   <LocalizedClientLink
                     href="/account/profile"
-                    className="flex items-center justify-between py-4 border-b border-gray-200 px-8"
+                    className="flex items-center justify-between py-4 border-b border-gray-200 px-8 text-gray-600 hover:text-primary-900 transition-colors duration-200"
                     data-testid="profile-link"
                   >
                     <>
-                      <div className="flex items-center gap-x-2">
+                      <div className="flex items-center gap-2">
                         <User size={20} />
                         <span>Profile</span>
                       </div>
@@ -63,11 +63,11 @@ const AccountNav = ({
                 <li>
                   <LocalizedClientLink
                     href="/account/addresses"
-                    className="flex items-center justify-between py-4 border-b border-gray-200 px-8"
+                    className="flex items-center justify-between py-4 border-b border-gray-200 px-8 text-gray-600 hover:text-primary-900 transition-colors duration-200"
                     data-testid="addresses-link"
                   >
                     <>
-                      <div className="flex items-center gap-x-2">
+                      <div className="flex items-center gap-2">
                         <MapPin size={20} />
                         <span>Addresses</span>
                       </div>
@@ -78,10 +78,10 @@ const AccountNav = ({
                 <li>
                   <LocalizedClientLink
                     href="/account/orders"
-                    className="flex items-center justify-between py-4 border-b border-gray-200 px-8"
+                    className="flex items-center justify-between py-4 border-b border-gray-200 px-8 text-gray-600 hover:text-primary-900 transition-colors duration-200"
                     data-testid="orders-link"
                   >
-                    <div className="flex items-center gap-x-2">
+                    <div className="flex items-center gap-2">
                       <Package size={20} />
                       <span>Orders</span>
                     </div>
@@ -91,11 +91,11 @@ const AccountNav = ({
                 <li>
                   <button
                     type="button"
-                    className="flex items-center justify-between py-4 border-b border-gray-200 px-8 w-full"
+                    className="flex items-center justify-between py-4 border-b border-gray-200 px-8 w-full text-gray-600 hover:text-primary-900 transition-colors duration-200"
                     onClick={handleLogout}
                     data-testid="logout-button"
                   >
-                    <div className="flex items-center gap-x-2">
+                    <div className="flex items-center gap-2">
                       <ArrowRightOnRectangle />
                       <span>Log out</span>
                     </div>
@@ -110,10 +110,10 @@ const AccountNav = ({
       <div className="hidden small:block" data-testid="account-nav">
         <div>
           <div className="pb-4">
-            <h3 className="text-base-semi">Account</h3>
+            <h3 className="text-h4 text-primary-900 font-semibold">Account</h3>
           </div>
-          <div className="text-base-regular">
-            <ul className="flex mb-0 justify-start items-start flex-col gap-y-4">
+          <div className="text-body">
+            <ul className="flex mb-0 justify-start items-start flex-col gap-4">
               <li>
                 <AccountNavLink
                   href="/account"
@@ -150,11 +150,12 @@ const AccountNav = ({
                   Orders
                 </AccountNavLink>
               </li>
-              <li className="text-grey-700">
+              <li className="text-gray-600">
                 <button
                   type="button"
                   onClick={handleLogout}
                   data-testid="logout-button"
+                  className="text-gray-600 hover:text-primary-900 transition-colors duration-200"
                 >
                   Log out
                 </button>
@@ -186,8 +187,8 @@ const AccountNavLink = ({
   return (
     <LocalizedClientLink
       href={href}
-      className={clx("text-ui-fg-subtle hover:text-ui-fg-base", {
-        "text-ui-fg-base font-semibold": active,
+      className={clx("text-gray-600 hover:text-primary-900 transition-colors duration-200", {
+        "text-primary-900 font-semibold": active,
       })}
       data-testid={dataTestId}
     >

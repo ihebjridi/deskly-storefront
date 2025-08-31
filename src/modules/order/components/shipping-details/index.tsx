@@ -1,8 +1,5 @@
 import { convertToLocale } from "@lib/util/money"
 import { HttpTypes } from "@medusajs/types"
-import { Heading, Text } from "@medusajs/ui"
-
-import Divider from "@modules/common/components/divider"
 
 type ShippingDetailsProps = {
   order: HttpTypes.StoreOrder
@@ -10,62 +7,58 @@ type ShippingDetailsProps = {
 
 const ShippingDetails = ({ order }: ShippingDetailsProps) => {
   return (
-    <div>
-      <Heading level="h2" className="flex flex-row text-3xl-regular my-6">
-        Delivery
-      </Heading>
-      <div className="flex items-start gap-x-8">
+    <div className="bg-white rounded-lg border border-gray-200 shadow-sm p-6">
+      <div className="flex items-center gap-3 mb-4">
+        <div className="w-10 h-10 bg-tech-blue/10 rounded-lg flex items-center justify-center">
+          <svg className="w-5 h-5 text-tech-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+          </svg>
+        </div>
+        <h3 className="text-lg font-semibold text-primary-900">Shipping Details</h3>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div
-          className="flex flex-col w-1/3"
+          className="space-y-2"
           data-testid="shipping-address-summary"
         >
-          <Text className="txt-medium-plus text-ui-fg-base mb-1">
-            Shipping Address
-          </Text>
-          <Text className="txt-medium text-ui-fg-subtle">
-            {order.shipping_address?.first_name}{" "}
-            {order.shipping_address?.last_name}
-          </Text>
-          <Text className="txt-medium text-ui-fg-subtle">
-            {order.shipping_address?.address_1}{" "}
-            {order.shipping_address?.address_2}
-          </Text>
-          <Text className="txt-medium text-ui-fg-subtle">
-            {order.shipping_address?.postal_code},{" "}
-            {order.shipping_address?.city}
-          </Text>
-          <Text className="txt-medium text-ui-fg-subtle">
-            {order.shipping_address?.country_code?.toUpperCase()}
-          </Text>
+          <h4 className="text-sm font-medium text-gray-700">Shipping Address</h4>
+          <div className="text-sm text-gray-900">
+            <div>{order.shipping_address?.first_name} {order.shipping_address?.last_name}</div>
+            <div>{order.shipping_address?.address_1}</div>
+            {order.shipping_address?.address_2 && <div>{order.shipping_address.address_2}</div>}
+            <div>{order.shipping_address?.postal_code}, {order.shipping_address?.city}</div>
+            <div>{order.shipping_address?.country_code?.toUpperCase()}</div>
+          </div>
         </div>
 
         <div
-          className="flex flex-col w-1/3 "
+          className="space-y-2"
           data-testid="shipping-contact-summary"
         >
-          <Text className="txt-medium-plus text-ui-fg-base mb-1">Contact</Text>
-          <Text className="txt-medium text-ui-fg-subtle">
-            {order.shipping_address?.phone}
-          </Text>
-          <Text className="txt-medium text-ui-fg-subtle">{order.email}</Text>
+          <h4 className="text-sm font-medium text-gray-700">Contact</h4>
+          <div className="text-sm text-gray-900">
+            {order.shipping_address?.phone && <div>{order.shipping_address.phone}</div>}
+            <div>{order.email}</div>
+          </div>
         </div>
 
         <div
-          className="flex flex-col w-1/3"
+          className="space-y-2"
           data-testid="shipping-method-summary"
         >
-          <Text className="txt-medium-plus text-ui-fg-base mb-1">Method</Text>
-          <Text className="txt-medium text-ui-fg-subtle">
-            {(order as any).shipping_methods[0]?.name} (
-            {convertToLocale({
-              amount: order.shipping_methods?.[0].total ?? 0,
-              currency_code: order.currency_code,
-            })}
-            )
-          </Text>
+          <h4 className="text-sm font-medium text-gray-700">Shipping Method</h4>
+          <div className="text-sm text-gray-900">
+            <div>{(order as any).shipping_methods[0]?.name}</div>
+            <div className="font-medium">
+              {convertToLocale({
+                amount: order.shipping_methods?.[0].total ?? 0,
+                currency_code: order.currency_code,
+              })}
+            </div>
+          </div>
         </div>
       </div>
-      <Divider className="mt-8" />
     </div>
   )
 }

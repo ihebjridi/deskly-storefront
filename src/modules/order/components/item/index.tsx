@@ -1,5 +1,4 @@
 import { HttpTypes } from "@medusajs/types"
-import { Table, Text } from "@medusajs/ui"
 
 import LineItemOptions from "@modules/common/components/line-item-options"
 import LineItemPrice from "@modules/common/components/line-item-price"
@@ -13,44 +12,46 @@ type ItemProps = {
 
 const Item = ({ item, currencyCode }: ItemProps) => {
   return (
-    <Table.Row className="w-full" data-testid="product-row">
-      <Table.Cell className="!pl-0 p-4 w-24">
-        <div className="flex w-16">
+    <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg" data-testid="product-row">
+      {/* Product Image */}
+      <div className="flex-shrink-0">
+        <div className="w-16 h-16 bg-white rounded-lg overflow-hidden">
           <Thumbnail thumbnail={item.thumbnail} size="square" />
         </div>
-      </Table.Cell>
+      </div>
 
-      <Table.Cell className="text-left">
-        <Text
-          className="txt-medium-plus text-ui-fg-base"
+      {/* Product Details */}
+      <div className="flex-1 min-w-0">
+        <h4
+          className="text-sm font-medium text-primary-900 mb-1"
           data-testid="product-name"
         >
           {item.product_title}
-        </Text>
+        </h4>
         <LineItemOptions variant={item.variant} data-testid="product-variant" />
-      </Table.Cell>
+      </div>
 
-      <Table.Cell className="!pr-0">
-        <span className="!pr-0 flex flex-col items-end h-full justify-center">
-          <span className="flex gap-x-1 ">
-            <Text className="text-ui-fg-muted">
-              <span data-testid="product-quantity">{item.quantity}</span>x{" "}
-            </Text>
-            <LineItemUnitPrice
-              item={item}
-              style="tight"
-              currencyCode={currencyCode}
-            />
+      {/* Product Pricing */}
+      <div className="flex flex-col items-end text-right">
+        <div className="flex items-center gap-1 mb-1">
+          <span className="text-sm text-gray-600" data-testid="product-quantity">
+            {item.quantity}
           </span>
-
-          <LineItemPrice
+          <span className="text-sm text-gray-600">×</span>
+          <LineItemUnitPrice
             item={item}
             style="tight"
             currencyCode={currencyCode}
           />
-        </span>
-      </Table.Cell>
-    </Table.Row>
+        </div>
+
+        <LineItemPrice
+          item={item}
+          style="tight"
+          currencyCode={currencyCode}
+        />
+      </div>
+    </div>
   )
 }
 

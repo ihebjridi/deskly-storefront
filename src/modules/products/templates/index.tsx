@@ -27,42 +27,64 @@ const ProductTemplate: React.FC<ProductTemplateProps> = ({
   }
 
   return (
-    <>
-      <div
-        className="content-container flex flex-col small:flex-row small:items-start py-6 relative"
-        data-testid="product-container"
-      >
-        <div className="flex flex-col small:sticky small:top-48 small:py-0 small:max-w-[300px] w-full py-8 gap-y-6">
-          <ProductInfo product={product} />
-          <ProductTabs product={product} />
+    <div className="min-h-screen bg-gray-50">
+      {/* Hero Section */}
+      <div className="bg-white border-b border-gray-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+          <div className="flex items-center gap-2 text-sm text-gray-600 mb-4">
+            <span>Home</span>
+            <span>/</span>
+            <span>Products</span>
+            <span>/</span>
+            <span className="text-primary-900 font-medium">{product.title}</span>
+          </div>
         </div>
-        <div className="block w-full relative">
-          <ImageGallery images={product?.images || []} />
+      </div>
+
+      {/* Main Product Section */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          {/* Left Section - Product Images */}
+          <div className="space-y-6">
+            <ImageGallery images={product?.images || []} />
+            <ProductTabs product={product} />
+          </div>
+
+          {/* Right Section - Product Details & Actions */}
+          <div className="space-y-8">
+            <ProductInfo product={product} />
+            <Suspense
+              fallback={
+                <ProductActions
+                  disabled={true}
+                  product={product}
+                  region={region}
+                />
+              }
+            >
+              <ProductActionsWrapper id={product.id} region={region} />
+            </Suspense>
+          </div>
         </div>
-        <div className="flex flex-col small:sticky small:top-48 small:py-0 small:max-w-[300px] w-full py-8 gap-y-12">
-          <ProductOnboardingCta />
-          <Suspense
-            fallback={
-              <ProductActions
-                disabled={true}
-                product={product}
-                region={region}
-              />
-            }
-          >
-            <ProductActionsWrapper id={product.id} region={region} />
+      </div>
+
+      {/* Related Products Section */}
+      <div className="bg-white border-t border-gray-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-16">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-primary-900 mb-4">
+              You might also like
+            </h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              Discover more amazing products that complement your selection
+            </p>
+          </div>
+          <Suspense fallback={<SkeletonRelatedProducts />}>
+            <RelatedProducts product={product} countryCode={countryCode} />
           </Suspense>
         </div>
       </div>
-      <div
-        className="content-container my-16 small:my-32"
-        data-testid="related-products-container"
-      >
-        <Suspense fallback={<SkeletonRelatedProducts />}>
-          <RelatedProducts product={product} countryCode={countryCode} />
-        </Suspense>
-      </div>
-    </>
+    </div>
   )
 }
 

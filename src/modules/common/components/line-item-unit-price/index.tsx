@@ -21,12 +21,12 @@ const LineItemUnitPrice = ({
   )
 
   return (
-    <div className="flex flex-col text-ui-fg-muted justify-center h-full">
+    <div className="flex flex-col text-gray-600 justify-center h-full">
       {hasReducedPrice && (
         <>
           <p>
             {style === "default" && (
-              <span className="text-ui-fg-muted">Original: </span>
+              <span className="text-gray-600">Original: </span>
             )}
             <span
               className="line-through"
@@ -39,13 +39,14 @@ const LineItemUnitPrice = ({
             </span>
           </p>
           {style === "default" && (
-            <span className="text-ui-fg-interactive">-{percentage_diff}%</span>
+            <span className="text-tech-blue">-{percentage_diff}%</span>
           )}
         </>
       )}
       <span
-        className={clx("text-base-regular", {
-          "text-ui-fg-interactive": hasReducedPrice,
+        className={clx("text-body", {
+          "text-tech-blue": hasReducedPrice,
+          "text-primary-900": !hasReducedPrice,
         })}
         data-testid="product-unit-price"
       >

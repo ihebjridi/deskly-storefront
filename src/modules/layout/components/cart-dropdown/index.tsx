@@ -1,342 +1,235 @@
 "use client"
 
-import { useState, useEffect, useTransition } from "react"
-import { ShoppingCart, Plus, Minus, Trash2, X, Loader2 } from "lucide-react"
-import { Button } from "@modules/common/components/ui/button"
+import { ShoppingCart } from "lucide-react"
 import {
   Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@modules/common/components/ui/popover"
-import { Badge } from "@modules/common/components/ui/badge"
-import { Separator } from "@modules/common/components/ui/separator"
-import LocalizedClientLink from "@modules/common/components/localized-client-link"
-import Image from "next/image"
+  PopoverButton,
+  PopoverPanel,
+  Transition,
+} from "@headlessui/react"
+import { convertToLocale } from "@lib/util/money"
 import { HttpTypes } from "@medusajs/types"
-import { updateLineItem, deleteLineItem, retrieveCart } from "@lib/data/cart"
+import { Button } from "@medusajs/ui"
+import DeleteButton from "@modules/common/components/delete-button"
+import LineItemOptions from "@modules/common/components/line-item-options"
+import LineItemPrice from "@modules/common/components/line-item-price"
+import LocalizedClientLink from "@modules/common/components/localized-client-link"
+import Thumbnail from "@modules/products/components/thumbnail"
+import { usePathname } from "next/navigation"
+import { Fragment, useEffect, useRef, useState } from "react"
 
-interface CartDropDownProps {
-  cart: HttpTypes.StoreCart | null
-  region?: HttpTypes.StoreRegion
-}
+const CartDropdown = ({
+  cart: cartState,
+}: {
+  cart?: HttpTypes.StoreCart | null
+}) => {
+  const [activeTimer, setActiveTimer] = useState<NodeJS.Timer | undefined>(
+    undefined
+  )
+  const [cartDropdownOpen, setCartDropdownOpen] = useState(false)
 
-export default function CartDropDown({ cart: initialCart, region }: CartDropDownProps) {
-  const [isOpen, setIsOpen] = useState(false)
-  const [cart, setCart] = useState<HttpTypes.StoreCart | null>(initialCart)
-  const [isUpdating, setIsUpdating] = useState<string | null>(null)
-  const [isPending, startTransition] = useTransition()
+  const open = () => setCartDropdownOpen(true)
+  const close = () => setCartDropdownOpen(false)
 
-  // Refresh cart data when popover opens
+  const totalItems =
+    cartState?.items?.reduce((acc, item) => {
+      return acc + item.quantity
+    }, 0) || 0
+
+  const subtotal = cartState?.subtotal ?? 0
+  const itemRef = useRef<number>(totalItems || 0)
+
+  const timedOpen = () => {
+    open()
+
+    const timer = setTimeout(close, 5000)
+
+    setActiveTimer(timer)
+  }
+
+  const openAndCancel = () => {
+    if (activeTimer) {
+      clearTimeout(activeTimer)
+    }
+
+    open()
+  }
+
+  // Clean up the timer when the component unmounts
   useEffect(() => {
-    if (isOpen && cart?.id) {
-      const refreshCart = async () => {
-        try {
-          const updatedCart = await retrieveCart(cart.id)
-          if (updatedCart) {
-            setCart(updatedCart)
-          }
-        } catch (error) {
-          console.error("Failed to refresh cart:", error)
-        }
+    return () => {
+      if (activeTimer) {
+        clearTimeout(activeTimer)
       }
-      refreshCart()
     }
-  }, [isOpen, cart?.id])
+  }, [activeTimer])
 
-  const totalItems = cart?.items?.reduce((sum, item) => sum + item.quantity, 0) || 0
-  const totalPrice = cart?.total || 0
-  const subtotal = cart?.subtotal || 0
-  const taxTotal = cart?.tax_total || 0
-  const discountTotal = cart?.discount_total || 0
+  const pathname = usePathname()
 
-  const handleUpdateQuantity = async (lineItemId: string, quantity: number) => {
-    if (quantity <= 0) {
-      handleRemoveItem(lineItemId)
-      return
+  // open cart dropdown when modifying the cart items, but only if we're not on the cart page
+  useEffect(() => {
+    if (itemRef.current !== totalItems && !pathname.includes("/cart")) {
+      timedOpen()
     }
-
-    setIsUpdating(lineItemId)
-    
-    startTransition(async () => {
-      try {
-        await updateLineItem({
-          lineId: lineItemId,
-          quantity,
-        })
-        
-        // Refresh cart after update
-        if (cart?.id) {
-          const updatedCart = await retrieveCart(cart.id)
-          if (updatedCart) {
-            setCart(updatedCart)
-          }
-        }
-      } catch (error) {
-        console.error("Failed to update item quantity:", error)
-        // You can add toast notification here
-      } finally {
-        setIsUpdating(null)
-      }
-    })
-  }
-
-  const handleRemoveItem = async (lineItemId: string) => {
-    setIsUpdating(lineItemId)
-    
-    startTransition(async () => {
-      try {
-        await deleteLineItem(lineItemId)
-        
-        // Refresh cart after removal
-        if (cart?.id) {
-          const updatedCart = await retrieveCart(cart.id)
-          if (updatedCart) {
-            setCart(updatedCart)
-          }
-        }
-      } catch (error) {
-        console.error("Failed to remove item:", error)
-        // You can add toast notification here
-      } finally {
-        setIsUpdating(null)
-      }
-    })
-  }
-
-  const formatPrice = (amount: number) => {
-    if (!region?.currency_code) {
-      return `$${(amount / 100).toFixed(2)}`
-    }
-    
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: region.currency_code.toUpperCase(),
-    }).format(amount / 100)
-  }
-
-  const getImageUrl = (item: HttpTypes.StoreCartLineItem) => {
-    // Use the thumbnail from the item if available, otherwise fallback to product images
-    return item.thumbnail || 
-           item.product?.thumbnail || 
-           item.product?.images?.[0]?.url ||
-           "/placeholder-product.jpg"
-  }
-
-  const getVariantTitle = (item: HttpTypes.StoreCartLineItem) => {
-    if (item.variant_title && item.variant_title !== "Default") {
-      return item.variant_title
-    }
-    return null
-  }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [totalItems, itemRef.current])
 
   return (
-    <Popover open={isOpen} onOpenChange={setIsOpen}>
-      <PopoverTrigger asChild>
-        <Button 
-          variant="ghost" 
-          size="icon" 
-          className="relative hover:bg-muted/80 transition-colors"
-          data-testid="cart-trigger"
+    <div
+      className="h-full z-50"
+      onMouseEnter={openAndCancel}
+      onMouseLeave={close}
+    >
+      <Popover className="relative h-full">
+        <PopoverButton className="h-full">
+          <div className="p-2.5 text-gray-500 hover:text-tech-blue hover:bg-gray-50 rounded-lg transition-all duration-200 relative">
+            <ShoppingCart className="w-5 h-5" />
+            {totalItems > 0 && (
+              <span className="absolute -top-1 -right-1 bg-tech-blue text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-medium">
+                {totalItems}
+              </span>
+            )}
+          </div>
+        </PopoverButton>
+        <Transition
+          show={cartDropdownOpen}
+          as={Fragment}
+          enter="transition ease-out duration-200"
+          enterFrom="opacity-0 translate-y-1"
+          enterTo="opacity-100 translate-y-0"
+          leave="transition ease-in duration-150"
+          leaveFrom="opacity-100 translate-y-0"
+          leaveTo="opacity-0 translate-y-1"
         >
-          <ShoppingCart className="h-5 w-5" />
-          {totalItems > 0 && (
-            <Badge className="absolute -right-2 -top-2 h-6 w-6 rounded-full p-0 flex items-center justify-center text-xs bg-primary animate-pulse">
-              {totalItems}
-            </Badge>
-          )}
-          <span className="sr-only">Cart</span>
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent className="w-96 p-0 shadow-xl border-0 bg-white/95 backdrop-blur-sm" align="end">
-        {/* Header */}
-        <div className="p-6 border-b bg-gradient-to-r from-primary/5 to-primary/10">
-          <div className="flex items-center justify-between">
-            <div>
-              <h3 className="font-semibold text-lg">Shopping Cart</h3>
-              <p className="text-sm text-muted-foreground">
-                {isPending ? (
-                  <span className="flex items-center gap-2">
-                    <Loader2 className="h-3 w-3 animate-spin" />
-                    Updating...
-                  </span>
-                ) : (
-                  `${totalItems} ${totalItems === 1 ? 'item' : 'items'} in cart`
-                )}
-              </p>
+          <PopoverPanel
+            static
+            className="hidden small:block absolute top-[calc(100%+1px)] right-0 bg-white border-x border-b border-gray-200 w-[420px] text-primary-900 shadow-lg rounded-lg"
+            data-testid="nav-cart-dropdown"
+          >
+            <div className="p-6 flex items-center justify-center">
+              <h3 className="text-h4 text-primary-900">Cart</h3>
             </div>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setIsOpen(false)}
-              className="h-8 w-8 p-0 hover:bg-white/80"
-            >
-              <X className="h-4 w-4" />
-            </Button>
-          </div>
-        </div>
-        
-        {/* Content */}
-        {!cart?.items?.length ? (
-          <div className="p-8 text-center">
-            <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-muted/50 flex items-center justify-center">
-              <ShoppingCart className="h-8 w-8 text-muted-foreground" />
-            </div>
-            <h4 className="font-medium mb-2">Your cart is empty</h4>
-            <p className="text-sm text-muted-foreground mb-6">Discover amazing products and add them to your cart</p>
-            <LocalizedClientLink href="/store">
-              <Button className="w-full" onClick={() => setIsOpen(false)}>
-                Continue Shopping
-              </Button>
-            </LocalizedClientLink>
-          </div>
-        ) : (
-          <>
-            {/* Cart Items */}
-            <div className="max-h-80 overflow-y-auto">
-              {cart.items.map((item) => (
-                <div key={item.id} className="p-4 border-b last:border-b-0 hover:bg-muted/30 transition-colors">
-                  <div className="flex items-start space-x-4">
-                    {/* Product Image */}
-                    <div className="w-16 h-16 bg-muted rounded-lg overflow-hidden flex-shrink-0 border">
-                      <Image
-                        src={getImageUrl(item)}
-                        alt={item.title || "Product"}
-                        width={64}
-                        height={64}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                    
-                    {/* Product Details */}
-                    <div className="flex-1 min-w-0">
-                      <h4 className="text-sm font-medium truncate mb-1">{item.title}</h4>
-                      {getVariantTitle(item) && (
-                        <p className="text-xs text-muted-foreground mb-2">{getVariantTitle(item)}</p>
-                      )}
-                      
-                      {/* Quantity Controls & Price */}
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center space-x-2">
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            className="h-7 w-7 p-0 rounded-full"
-                            onClick={() => handleUpdateQuantity(item.id, item.quantity - 1)}
-                            disabled={isUpdating === item.id || isPending}
-                          >
-                            {isUpdating === item.id ? (
-                              <Loader2 className="h-3 w-3 animate-spin" />
-                            ) : (
-                              <Minus className="h-3 w-3" />
-                            )}
-                          </Button>
-                          <span className="text-sm font-medium min-w-[2ch] text-center bg-muted/50 px-2 py-1 rounded">
-                            {item.quantity}
-                          </span>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            className="h-7 w-7 p-0 rounded-full"
-                            onClick={() => handleUpdateQuantity(item.id, item.quantity + 1)}
-                            disabled={isUpdating === item.id || isPending}
-                          >
-                            {isUpdating === item.id ? (
-                              <Loader2 className="h-3 w-3 animate-spin" />
-                            ) : (
-                              <Plus className="h-3 w-3" />
-                            )}
-                          </Button>
-                        </div>
-                        
-                        <div className="flex items-center space-x-3">
-                          <div className="text-right">
-                            <p className="text-sm font-semibold">
-                              {formatPrice(item.total || 0)}
-                            </p>
-                            {item.quantity > 1 && (
-                              <p className="text-xs text-muted-foreground">
-                                {formatPrice(item.unit_price || 0)} each
-                              </p>
-                            )}
+            {cartState && cartState.items?.length ? (
+              <>
+                <div className="overflow-y-scroll max-h-[402px] px-6 grid grid-cols-1 gap-8 no-scrollbar p-px">
+                  {cartState.items
+                    .sort((a, b) => {
+                      return (a.created_at ?? "") > (b.created_at ?? "")
+                        ? -1
+                        : 1
+                    })
+                    .map((item) => (
+                      <div
+                        className="grid grid-cols-[122px_1fr] gap-4"
+                        key={item.id}
+                        data-testid="cart-item"
+                      >
+                        <LocalizedClientLink
+                          href={`/products/${item.product_handle}`}
+                          className="w-24"
+                        >
+                          <Thumbnail
+                            thumbnail={item.thumbnail}
+                            images={item.variant?.product?.images}
+                            size="square"
+                          />
+                        </LocalizedClientLink>
+                        <div className="flex flex-col justify-between flex-1">
+                          <div className="flex flex-col flex-1">
+                            <div className="flex items-start justify-between">
+                              <div className="flex flex-col overflow-ellipsis whitespace-nowrap mr-4 w-[180px]">
+                                <h3 className="text-body overflow-hidden text-ellipsis">
+                                  <LocalizedClientLink
+                                    href={`/products/${item.product_handle}`}
+                                    data-testid="product-link"
+                                  >
+                                    {item.title}
+                                  </LocalizedClientLink>
+                                </h3>
+                                <LineItemOptions
+                                  variant={item.variant}
+                                  data-testid="cart-item-variant"
+                                  data-value={item.variant}
+                                />
+                                <span
+                                  className="text-body-small text-gray-600"
+                                  data-testid="cart-item-quantity"
+                                  data-value={item.quantity}
+                                >
+                                  Quantity: {item.quantity}
+                                </span>
+                              </div>
+                              <div className="flex justify-end">
+                                <LineItemPrice
+                                  item={item}
+                                  style="tight"
+                                  currencyCode={cartState.currency_code}
+                                />
+                              </div>
+                            </div>
                           </div>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            className="h-7 w-7 p-0 text-red-500 hover:text-red-700 hover:bg-red-50"
-                            onClick={() => handleRemoveItem(item.id)}
-                            disabled={isUpdating === item.id || isPending}
+                          <DeleteButton
+                            id={item.id}
+                            className="mt-1"
+                            data-testid="cart-item-remove-button"
                           >
-                            {isUpdating === item.id ? (
-                              <Loader2 className="h-3 w-3 animate-spin" />
-                            ) : (
-                              <Trash2 className="h-3 w-3" />
-                            )}
-                          </Button>
+                            Remove
+                          </DeleteButton>
                         </div>
                       </div>
-                    </div>
-                  </div>
+                    ))}
                 </div>
-              ))}
-            </div>
-            
-            {/* Cart Summary */}
-            <div className="p-6 border-t bg-gradient-to-r from-muted/30 to-muted/50">
-              <div className="space-y-2 mb-4">
-                <div className="flex items-center justify-between text-sm">
-                  <span>Subtotal:</span>
-                  <span>{formatPrice(subtotal)}</span>
-                </div>
-                {discountTotal > 0 && (
-                  <div className="flex items-center justify-between text-sm text-green-600">
-                    <span>Discount:</span>
-                    <span>-{formatPrice(discountTotal)}</span>
+                <div className="p-6 flex flex-col gap-4 text-body">
+                  <div className="flex items-center justify-between">
+                    <span className="text-primary-900 font-semibold">
+                      Subtotal{" "}
+                      <span className="font-normal text-gray-600">(excl. taxes)</span>
+                    </span>
+                    <span
+                      className="text-price-small text-primary-900"
+                      data-testid="cart-subtotal"
+                      data-value={subtotal}
+                    >
+                      {convertToLocale({
+                        amount: subtotal,
+                        currency_code: cartState.currency_code,
+                      })}
+                    </span>
                   </div>
-                )}
-                {taxTotal > 0 && (
-                  <div className="flex items-center justify-between text-sm">
-                    <span>Tax:</span>
-                    <span>{formatPrice(taxTotal)}</span>
-                  </div>
-                )}
-                <Separator />
-                <div className="flex items-center justify-between font-semibold">
-                  <span>Total:</span>
-                  <span className="text-lg">{formatPrice(totalPrice)}</span>
+                  <LocalizedClientLink href="/cart" passHref>
+                    <Button
+                      className="w-full btn-primary"
+                      size="large"
+                      data-testid="go-to-cart-button"
+                    >
+                      Go to cart
+                    </Button>
+                  </LocalizedClientLink>
                 </div>
-              </div>
-              
-              <div className="space-y-3">
-                <LocalizedClientLink href="/cart" className="w-full">
-                  <Button 
-                    variant="outline" 
-                    className="w-full hover:bg-white transition-colors" 
-                    onClick={() => setIsOpen(false)}
-                  >
-                    View Full Cart
-                  </Button>
-                </LocalizedClientLink>
-                <LocalizedClientLink href="/checkout" className="w-full">
-                  <Button 
-                    className="w-full bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary transition-all shadow-md" 
-                    onClick={() => setIsOpen(false)}
-                    disabled={isPending}
-                  >
-                    {isPending ? (
+              </>
+            ) : (
+              <div>
+                <div className="flex py-16 flex-col gap-4 items-center justify-center">
+                  <div className="bg-primary-900 text-body text-white flex items-center justify-center w-6 h-6 rounded-full">
+                    <span>0</span>
+                  </div>
+                  <span className="text-body text-gray-600">Your shopping bag is empty.</span>
+                  <div>
+                    <LocalizedClientLink href="/store">
                       <>
-                        <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                        Processing...
+                        <span className="sr-only">Go to all products page</span>
+                        <Button onClick={close} className="btn-primary">Explore products</Button>
                       </>
-                    ) : (
-                      "Proceed to Checkout"
-                    )}
-                  </Button>
-                </LocalizedClientLink>
+                    </LocalizedClientLink>
+                  </div>
+                </div>
               </div>
-            </div>
-          </>
-        )}
-      </PopoverContent>
-    </Popover>
+            )}
+          </PopoverPanel>
+        </Transition>
+      </Popover>
+    </div>
   )
 }
+
+export default CartDropdown

@@ -1,5 +1,5 @@
 import { HttpTypes } from "@medusajs/types"
-import { FormInput } from "@modules/common/components/input"
+import Input from "@modules/common/components/input"
 import React, { useState } from "react"
 import CountrySelect from "../country-select"
 
@@ -30,7 +30,7 @@ const BillingAddress = ({ cart }: { cart: HttpTypes.StoreCart | null }) => {
   return (
     <>
       <div className="grid grid-cols-2 gap-4">
-        <FormInput
+        <Input
           label="First name"
           name="billing_address.first_name"
           autoComplete="given-name"
@@ -39,7 +39,7 @@ const BillingAddress = ({ cart }: { cart: HttpTypes.StoreCart | null }) => {
           required
           data-testid="billing-first-name-input"
         />
-        <FormInput
+        <Input
           label="Last name"
           name="billing_address.last_name"
           autoComplete="family-name"
@@ -48,7 +48,7 @@ const BillingAddress = ({ cart }: { cart: HttpTypes.StoreCart | null }) => {
           required
           data-testid="billing-last-name-input"
         />
-        <FormInput
+        <Input
           label="Address"
           name="billing_address.address_1"
           autoComplete="address-line1"
@@ -57,7 +57,7 @@ const BillingAddress = ({ cart }: { cart: HttpTypes.StoreCart | null }) => {
           required
           data-testid="billing-address-input"
         />
-        <FormInput
+        <Input
           label="Company"
           name="billing_address.company"
           value={formData["billing_address.company"]}
@@ -65,7 +65,7 @@ const BillingAddress = ({ cart }: { cart: HttpTypes.StoreCart | null }) => {
           autoComplete="organization"
           data-testid="billing-company-input"
         />
-        <FormInput
+        <Input
           label="Postal code"
           name="billing_address.postal_code"
           autoComplete="postal-code"
@@ -74,7 +74,7 @@ const BillingAddress = ({ cart }: { cart: HttpTypes.StoreCart | null }) => {
           required
           data-testid="billing-postal-input"
         />
-        <FormInput
+        <Input
           label="City"
           name="billing_address.city"
           autoComplete="address-level2"
@@ -90,7 +90,7 @@ const BillingAddress = ({ cart }: { cart: HttpTypes.StoreCart | null }) => {
           required
           data-testid="billing-country-select"
         />
-        <FormInput
+        <Input
           label="State / Province"
           name="billing_address.province"
           autoComplete="address-level1"
@@ -98,7 +98,7 @@ const BillingAddress = ({ cart }: { cart: HttpTypes.StoreCart | null }) => {
           onChange={handleChange}
           data-testid="billing-province-input"
         />
-        <FormInput
+        <Input
           label="Phone"
           name="billing_address.phone"
           autoComplete="tel"

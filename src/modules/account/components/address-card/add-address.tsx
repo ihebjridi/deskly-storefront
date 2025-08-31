@@ -6,7 +6,7 @@ import { useEffect, useState, useActionState } from "react"
 
 import useToggleState from "@lib/hooks/use-toggle-state"
 import CountrySelect from "@modules/checkout/components/country-select"
-import { FormInput } from "@modules/common/components/input"
+import Input from "@modules/common/components/input"
 import Modal from "@modules/common/components/modal"
 import { SubmitButton } from "@modules/checkout/components/submit-button"
 import { HttpTypes } from "@medusajs/types"
@@ -65,14 +65,14 @@ const AddAddress = ({
           <Modal.Body>
             <div className="flex flex-col gap-y-2">
               <div className="grid grid-cols-2 gap-x-2">
-                <FormInput
+                <Input
                   label="First name"
                   name="first_name"
                   required
                   autoComplete="given-name"
                   data-testid="first-name-input"
                 />
-                <FormInput
+                <Input
                   label="Last name"
                   name="last_name"
                   required
@@ -80,34 +80,34 @@ const AddAddress = ({
                   data-testid="last-name-input"
                 />
               </div>
-              <FormInput
+              <Input
                 label="Company"
                 name="company"
                 autoComplete="organization"
                 data-testid="company-input"
               />
-              <FormInput
+              <Input
                 label="Address"
                 name="address_1"
                 required
                 autoComplete="address-line1"
                 data-testid="address-1-input"
               />
-              <FormInput
+              <Input
                 label="Apartment, suite, etc."
                 name="address_2"
                 autoComplete="address-line2"
                 data-testid="address-2-input"
               />
               <div className="grid grid-cols-[144px_1fr] gap-x-2">
-                <FormInput
+                <Input
                   label="Postal code"
                   name="postal_code"
                   required
                   autoComplete="postal-code"
                   data-testid="postal-code-input"
                 />
-                <FormInput
+                <Input
                   label="City"
                   name="city"
                   required
@@ -115,7 +115,7 @@ const AddAddress = ({
                   data-testid="city-input"
                 />
               </div>
-              <FormInput
+              <Input
                 label="Province / State"
                 name="province"
                 autoComplete="address-level1"
@@ -128,7 +128,7 @@ const AddAddress = ({
                 autoComplete="country"
                 data-testid="country-select"
               />
-              <FormInput
+              <Input
                 label="Phone"
                 name="phone"
                 autoComplete="phone"

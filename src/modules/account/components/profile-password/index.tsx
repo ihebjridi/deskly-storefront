@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useEffect, useActionState } from "react"
-import { FormInput } from "@modules/common/components/input"
+import Input from "@modules/common/components/input"
 import AccountInfo from "../account-info"
 import { HttpTypes } from "@medusajs/types"
 import { toast } from "@medusajs/ui"
@@ -40,21 +40,21 @@ const ProfilePassword: React.FC<MyInformationProps> = ({ customer }) => {
         data-testid="account-password-editor"
       >
         <div className="grid grid-cols-2 gap-4">
-          <FormInput
+          <Input
             label="Old password"
             name="old_password"
             required
             type="password"
             data-testid="old-password-input"
           />
-          <FormInput
+          <Input
             label="New password"
             type="password"
             name="new_password"
             required
             data-testid="new-password-input"
           />
-          <FormInput
+          <Input
             label="Confirm password"
             type="password"
             name="confirm_password"

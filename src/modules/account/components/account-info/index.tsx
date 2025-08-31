@@ -42,30 +42,35 @@ const AccountInfo = ({
   }, [isSuccess, close])
 
   return (
-    <div className="text-small-regular" data-testid={dataTestid}>
-      <div className="flex items-end justify-between">
-        <div className="flex flex-col">
-          <span className="uppercase text-ui-fg-base">{label}</span>
-          <div className="flex items-center flex-1 basis-0 justify-end gap-x-4">
-            {typeof currentInfo === "string" ? (
-              <span className="font-semibold" data-testid="current-info">{currentInfo}</span>
-            ) : (
-              currentInfo
-            )}
+    <div className="bg-white rounded-lg border border-gray-200 shadow-sm p-6" data-testid={dataTestid}>
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 bg-tech-blue/10 rounded-lg flex items-center justify-center">
+            <svg className="w-5 h-5 text-tech-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+            </svg>
+          </div>
+          <div>
+            <h3 className="font-semibold text-primary-900">{label}</h3>
+            <div className="text-sm text-gray-600">
+              {typeof currentInfo === "string" ? (
+                <span data-testid="current-info">{currentInfo}</span>
+              ) : (
+                currentInfo
+              )}
+            </div>
           </div>
         </div>
-        <div>
-          <Button
-            variant="secondary"
-            className="w-[100px] min-h-[25px] py-1"
-            onClick={handleToggle}
-            type={state ? "reset" : "button"}
-            data-testid="edit-button"
-            data-active={state}
-          >
-            {state ? "Cancel" : "Edit"}
-          </Button>
-        </div>
+        <Button
+          variant="secondary"
+          className="px-4 py-2 text-sm font-medium"
+          onClick={handleToggle}
+          type={state ? "reset" : "button"}
+          data-testid="edit-button"
+          data-active={state}
+        >
+          {state ? "Cancel" : "Edit"}
+        </Button>
       </div>
 
       {/* Success state */}
@@ -81,9 +86,14 @@ const AccountInfo = ({
           )}
           data-testid="success-message"
         >
-          <Badge className="p-2 my-4" color="green">
-            <span>{label} updated succesfully</span>
-          </Badge>
+          <div className="bg-green-50 border border-green-200 rounded-lg p-3 my-4">
+            <div className="flex items-center gap-2">
+              <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+              </svg>
+              <span className="text-sm font-medium text-green-800">{label} updated successfully</span>
+            </div>
+          </div>
         </Disclosure.Panel>
       </Disclosure>
 
@@ -100,9 +110,14 @@ const AccountInfo = ({
           )}
           data-testid="error-message"
         >
-          <Badge className="p-2 my-4" color="red">
-            <span>{errorMessage}</span>
-          </Badge>
+          <div className="bg-red-50 border border-red-200 rounded-lg p-3 my-4">
+            <div className="flex items-center gap-2">
+              <svg className="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+              <span className="text-sm font-medium text-red-800">{errorMessage}</span>
+            </div>
+          </div>
         </Disclosure.Panel>
       </Disclosure>
 
@@ -117,12 +132,14 @@ const AccountInfo = ({
             }
           )}
         >
-          <div className="flex flex-col gap-y-2 py-4">
-            <div>{children}</div>
-            <div className="flex items-center justify-end mt-2">
+          <div className="pt-4 border-t border-gray-100">
+            <div className="space-y-4">
+              {children}
+            </div>
+            <div className="flex items-center justify-end mt-6">
               <Button
                 isLoading={pending}
-                className="w-full small:max-w-[140px]"
+                className="px-6 py-2 bg-tech-blue hover:bg-tech-blue/90 text-white font-medium rounded-lg transition-colors duration-200"
                 type="submit"
                 data-testid="save-button"
               >

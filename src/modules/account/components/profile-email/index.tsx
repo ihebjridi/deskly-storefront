@@ -2,7 +2,7 @@
 
 import React, { useEffect, useActionState } from "react";
 
-import { FormInput } from "@modules/common/components/input"
+import Input from "@modules/common/components/input"
 
 import AccountInfo from "../account-info"
 import { HttpTypes } from "@medusajs/types"
@@ -57,7 +57,7 @@ const ProfileEmail: React.FC<MyInformationProps> = ({ customer }) => {
         data-testid="account-email-editor"
       >
         <div className="grid grid-cols-1 gap-y-2">
-          <FormInput
+          <Input
             label="Email"
             name="email"
             type="email"

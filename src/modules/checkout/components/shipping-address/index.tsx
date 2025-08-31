@@ -1,7 +1,7 @@
 import { HttpTypes } from "@medusajs/types"
 import { Container } from "@medusajs/ui"
 import Checkbox from "@modules/common/components/checkbox"
-import { FormInput } from "@modules/common/components/input"
+import Input from "@modules/common/components/input"
 import { mapKeys } from "lodash"
 import React, { useEffect, useMemo, useState } from "react"
 import AddressSelect from "../address-select"
@@ -111,7 +111,7 @@ const ShippingAddress = ({
         </Container>
       )}
       <div className="grid grid-cols-2 gap-4">
-        <FormInput
+        <Input
           label="First name"
           name="shipping_address.first_name"
           autoComplete="given-name"
@@ -120,7 +120,7 @@ const ShippingAddress = ({
           required
           data-testid="shipping-first-name-input"
         />
-        <FormInput
+        <Input
           label="Last name"
           name="shipping_address.last_name"
           autoComplete="family-name"
@@ -129,7 +129,7 @@ const ShippingAddress = ({
           required
           data-testid="shipping-last-name-input"
         />
-        <FormInput
+        <Input
           label="Address"
           name="shipping_address.address_1"
           autoComplete="address-line1"
@@ -138,7 +138,7 @@ const ShippingAddress = ({
           required
           data-testid="shipping-address-input"
         />
-        <FormInput
+        <Input
           label="Company"
           name="shipping_address.company"
           value={formData["shipping_address.company"]}
@@ -146,7 +146,7 @@ const ShippingAddress = ({
           autoComplete="organization"
           data-testid="shipping-company-input"
         />
-        <FormInput
+        <Input
           label="Postal code"
           name="shipping_address.postal_code"
           autoComplete="postal-code"
@@ -155,7 +155,7 @@ const ShippingAddress = ({
           required
           data-testid="shipping-postal-code-input"
         />
-        <FormInput
+        <Input
           label="City"
           name="shipping_address.city"
           autoComplete="address-level2"
@@ -173,7 +173,7 @@ const ShippingAddress = ({
           required
           data-testid="shipping-country-select"
         />
-        <FormInput
+        <Input
           label="State / Province"
           name="shipping_address.province"
           autoComplete="address-level1"
@@ -192,7 +192,7 @@ const ShippingAddress = ({
         />
       </div>
       <div className="grid grid-cols-2 gap-4 mb-4">
-        <FormInput
+        <Input
           label="Email"
           name="email"
           type="email"
@@ -203,7 +203,7 @@ const ShippingAddress = ({
           required
           data-testid="shipping-email-input"
         />
-        <FormInput
+        <Input
           label="Phone"
           name="shipping_address.phone"
           autoComplete="tel"
