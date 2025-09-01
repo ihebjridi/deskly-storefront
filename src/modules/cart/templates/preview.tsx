@@ -23,6 +23,12 @@ const ItemsPreviewTemplate = ({ cart }: ItemsTemplateProps) => {
       })}
     >
       <Table>
+        <Table.Header>
+          <Table.Row>
+            <Table.HeaderCell>Product</Table.HeaderCell>
+            <Table.HeaderCell className="text-right">Total</Table.HeaderCell>
+          </Table.Row>
+        </Table.Header>
         <Table.Body data-testid="items-table">
           {items
             ? items

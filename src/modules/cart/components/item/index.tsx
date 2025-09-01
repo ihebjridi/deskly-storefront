@@ -44,16 +44,67 @@ const Item = ({ item, type = "full", currencyCode }: ItemProps) => {
   const maxQtyFromInventory = 10
   const maxQuantity = item.variant?.manage_inventory ? 10 : maxQtyFromInventory
 
+  // For preview type, render as table row
+  if (type === "preview") {
+    return (
+      <tr className="border-b border-ui-border-base" data-testid="product-row">
+        <td className="py-3">
+          <div className="flex items-center gap-4">
+            {/* Product Image */}
+            <div className="flex-shrink-0">
+              <LocalizedClientLink
+                href={`/products/${item.product_handle}`}
+                className="w-16"
+              >
+                <Thumbnail
+                  thumbnail={item.thumbnail}
+                  images={item.variant?.product?.images}
+                  size="square"
+                />
+              </LocalizedClientLink>
+            </div>
+
+            {/* Product Details */}
+            <div className="flex-1 min-w-0">
+              <h4
+                className="text-sm font-medium text-primary-900 mb-1"
+                data-testid="product-title"
+              >
+                {item.product_title}
+              </h4>
+              <LineItemOptions variant={item.variant} data-testid="product-variant" />
+            </div>
+          </div>
+        </td>
+        <td className="py-3 text-right">
+          <div className="flex flex-col items-end text-right min-w-[100px]">
+            <div className="flex gap-1 text-sm text-gray-600 mb-1">
+              <span>{item.quantity}×</span>
+              <LineItemUnitPrice
+                item={item}
+                style="tight"
+                currencyCode={currencyCode}
+              />
+            </div>
+            <LineItemPrice
+              item={item}
+              style="tight"
+              currencyCode={currencyCode}
+            />
+          </div>
+        </td>
+      </tr>
+    )
+  }
+
+  // For full type, render as div (original behavior)
   return (
     <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg" data-testid="product-row">
       {/* Product Image */}
       <div className="flex-shrink-0">
         <LocalizedClientLink
           href={`/products/${item.product_handle}`}
-          className={clx("flex", {
-            "w-16": type === "preview",
-            "w-20": type === "full",
-          })}
+          className="w-20"
         >
           <Thumbnail
             thumbnail={item.thumbnail}
@@ -75,57 +126,43 @@ const Item = ({ item, type = "full", currencyCode }: ItemProps) => {
       </div>
 
       {/* Quantity and Actions */}
-      {type === "full" && (
-        <div className="flex flex-col items-center gap-2">
-          <div className="flex gap-2 items-center">
-            <DeleteButton id={item.id} data-testid="product-delete-button" />
-            <CartItemSelect
-              value={item.quantity}
-              onChange={(value) => changeQuantity(parseInt(value.target.value))}
-              className="w-16 h-10 p-2 border border-gray-300 rounded-lg"
-              data-testid="product-select-button"
-            >
-              {/* TODO: Update this with the v2 way of managing inventory */}
-              {Array.from(
-                {
-                  length: Math.min(maxQuantity, 10),
-                },
-                (_, i) => (
-                  <option value={i + 1} key={i}>
-                    {i + 1}
-                  </option>
-                )
-              )}
-            </CartItemSelect>
-            {updating && <Spinner />}
-          </div>
-          <ErrorMessage error={error} data-testid="product-error-message" />
+      <div className="flex flex-col items-center gap-2">
+        <div className="flex gap-2 items-center">
+          <DeleteButton id={item.id} data-testid="product-delete-button" />
+          <CartItemSelect
+            value={item.quantity}
+            onChange={(value) => changeQuantity(parseInt(value.target.value))}
+            className="w-16 h-10 p-2 border border-gray-300 rounded-lg"
+            data-testid="product-select-button"
+          >
+            {/* TODO: Update this with the v2 way of managing inventory */}
+            {Array.from(
+              {
+                length: Math.min(maxQuantity, 10),
+              },
+              (_, i) => (
+                <option value={i + 1} key={i}>
+                  {i + 1}
+                </option>
+              )
+            )}
+          </CartItemSelect>
+          {updating && <Spinner />}
         </div>
-      )}
+        <ErrorMessage error={error} data-testid="product-error-message" />
+      </div>
 
       {/* Unit Price (Full view only) */}
-      {type === "full" && (
-        <div className="text-center min-w-[80px]">
-          <LineItemUnitPrice
-            item={item}
-            style="tight"
-            currencyCode={currencyCode}
-          />
-        </div>
-      )}
+      <div className="text-center min-w-[80px]">
+        <LineItemUnitPrice
+          item={item}
+          style="tight"
+          currencyCode={currencyCode}
+        />
+      </div>
 
       {/* Total Price */}
       <div className="flex flex-col items-end text-right min-w-[100px]">
-        {type === "preview" && (
-          <div className="flex gap-1 text-sm text-gray-600 mb-1">
-            <span>{item.quantity}×</span>
-            <LineItemUnitPrice
-              item={item}
-              style="tight"
-              currencyCode={currencyCode}
-            />
-          </div>
-        )}
         <LineItemPrice
           item={item}
           style="tight"
