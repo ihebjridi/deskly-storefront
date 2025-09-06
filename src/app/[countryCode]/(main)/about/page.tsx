@@ -107,43 +107,43 @@ const AboutPage = () => {
         </div>
 
         {/* Team Section */}
-        <div className="text-center mb-20">
+        {/* <div className="text-center mb-20">
           <h2 className="text-3xl font-bold text-primary-900 mb-6">Meet Our Team</h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-12">
             Our diverse team of tech experts, designers, and customer service professionals 
             work together to bring you the best possible experience.
           </p>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"> */}
             {/* Team Member 1 */}
-            <div className="text-center">
+            {/* <div className="text-center">
               <div className="w-24 h-24 bg-gray-200 rounded-full mx-auto mb-4 flex items-center justify-center">
                 <span className="text-2xl font-bold text-gray-600">JD</span>
               </div>
               <h3 className="font-semibold text-primary-900 mb-1">John Doe</h3>
               <p className="text-sm text-gray-600">CEO & Founder</p>
-            </div>
+            </div> */}
 
             {/* Team Member 2 */}
-            <div className="text-center">
+            {/* <div className="text-center">
               <div className="w-24 h-24 bg-gray-200 rounded-full mx-auto mb-4 flex items-center justify-center">
                 <span className="text-2xl font-bold text-gray-600">JS</span>
               </div>
               <h3 className="font-semibold text-primary-900 mb-1">Jane Smith</h3>
               <p className="text-sm text-gray-600">CTO</p>
-            </div>
+            </div> */}
 
             {/* Team Member 3 */}
-            <div className="text-center">
+            {/* <div className="text-center">
               <div className="w-24 h-24 bg-gray-200 rounded-full mx-auto mb-4 flex items-center justify-center">
                 <span className="text-2xl font-bold text-gray-600">MJ</span>
               </div>
               <h3 className="font-semibold text-primary-900 mb-1">Mike Johnson</h3>
               <p className="text-sm text-gray-600">Head of Product</p>
-            </div>
+            </div> */}
 
             {/* Team Member 4 */}
-            <div className="text-center">
+            {/* <div className="text-center">
               <div className="w-24 h-24 bg-gray-200 rounded-full mx-auto mb-4 flex items-center justify-center">
                 <span className="text-2xl font-bold text-gray-600">SW</span>
               </div>
@@ -151,9 +151,9 @@ const AboutPage = () => {
               <p className="text-sm text-gray-600">Customer Success</p>
             </div>
           </div>
-        </div>
+        </div> */}
 
-                     {/* Stats Section */}
+          {/* Stats Section */}
              <div className="bg-white rounded-lg border border-gray-200 shadow-sm p-12">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 text-center">
             <div>
