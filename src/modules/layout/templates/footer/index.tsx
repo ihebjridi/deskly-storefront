@@ -1,6 +1,7 @@
 import { listCategories } from "@lib/data/categories"
 import { listCollections } from "@lib/data/collections"
 import { Text, clx } from "@medusajs/ui"
+import Image from "next/image"
 
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import MedusaCTA from "@modules/layout/components/medusa-cta"
@@ -21,9 +22,15 @@ export default async function Footer() {
             <div className="lg:col-span-1">
               <LocalizedClientLink
                 href="/"
-                className="text-2xl font-bold text-white hover:text-tech-blue transition-colors duration-200 inline-block mb-4"
+                className="hover:opacity-80 transition-opacity duration-200 inline-block mb-4"
               >
-                DESKLY
+                <Image
+                  src="/images/deskly-logo.png"
+                  alt="Deskly Logo"
+                  width={150}
+                  height={60}
+                  className="h-12 w-auto"
+                />
               </LocalizedClientLink>
               <p className="text-gray-300 mb-6 leading-relaxed">
                 Cutting-edge tech gadgets and electronics for the modern digital lifestyle. 

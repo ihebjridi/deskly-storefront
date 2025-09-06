@@ -1,5 +1,6 @@
 import { Suspense } from "react"
 import { Search, User, ShoppingCart } from "lucide-react"
+import Image from "next/image"
 
 import { listRegions } from "@lib/data/regions"
 import { StoreRegion } from "@medusajs/types"
@@ -28,10 +29,16 @@ export default async function Nav() {
           <div className="flex items-center">
             <LocalizedClientLink
               href="/"
-              className="text-xl sm:text-2xl font-bold text-primary-900 hover:text-tech-blue transition-colors duration-200"
+              className="hover:opacity-80 transition-opacity duration-200"
               data-testid="nav-logo-link"
             >
-              DESKLY
+              <Image
+                src="/images/deskly-logo.png"
+                alt="Deskly Logo"
+                width={120}
+                height={40}
+                className="h-8 w-auto"
+              />
             </LocalizedClientLink>
           </div>
 
